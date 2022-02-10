@@ -1,6 +1,6 @@
 ## kinstall
 
-`kinstall` is an easy way to install gradle-based kotlin projects that use the `application` plugin.
+`kinstall` is an easy way to install gradle-based command-line kotlin projects that use the `application` plugin.
 
 ## use
 
@@ -27,3 +27,13 @@ Options:
 ## what it does
 
 `kinstall` looks for `tar` files in `build/distributions` and extracts them to `~/.kinstall/{project}/{version}`. The current version of a project that's in use is symlinked to `~/.kinstall/{project}/_current`. When making a particular version current, `kinstall` looks for scripts in `~/.kinstall/{project}/_current/bin` and symlinks them to `~/bin`. It reports the symlinks it creates.
+
+It gets the project's name and version by capturing and parsing the output of `gradle properties --console=plain -q`.
+
+## what it doesn't do
+
+* Handle parent/sub-project projects (it expects a single project).
+* Make sure your build is current.
+* Handle non-gradle ways of creating tarballs (it expects a `tar` file in `build/distributions` that has a `bin` subdirectory).
+* Attempt to correct for any manual changes to the files/symlinks in `~/.kinstall` or `~/bin`.
+* Handle maven projects.
