@@ -4,7 +4,7 @@
 
 ## use
 
-First, install `kinstall` itself by doing `gradle build run`. This will create a symlink in `~/bin/kinstall`.
+First, install `kinstall` itself by doing `gradle build run`. This will create a symlink at `~/bin/kinstall`.
 
 Run `kinstall` in the root project folder of a project on which you've already run `distTar` (`build` runs it).
 
