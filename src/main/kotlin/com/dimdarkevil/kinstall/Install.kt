@@ -17,7 +17,7 @@ object Install {
     private val kinstallDir = File(HOME, ".kinstall")
     private val userBinDir = File(HOME, "bin")
     private val pwd = File(System.getProperty("user.dir"))
-    private val projectNameRegex = Regex("Root project '(.*?)'")
+    private val projectNameRegex = Regex("rootProject: root project '(.*?)'")
     private val projectVerRegex = Regex("version: (.*)")
 
     private val help = """
