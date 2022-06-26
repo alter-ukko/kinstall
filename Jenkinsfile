@@ -16,7 +16,9 @@ pipeline {
 		stage('build') {
 			steps {
 				echo 'building...'
-				sh 'gradle build'
+				gradle {
+					tasks: 'build'
+				}
 			}
 		}
 		stage('release') {
