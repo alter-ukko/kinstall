@@ -10,6 +10,7 @@ pipeline {
 		stage('version') {
 			steps {
 				echo "setting version to ${env.VERSION}"
+				sh 'git checkout main'
 				sh 'sed -i "s/^version=.*/version=${VERSION}/" gradle.properties'
 			}		
 		}
