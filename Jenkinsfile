@@ -9,7 +9,8 @@ pipeline {
 	stages {
 		stage('version') {
 			steps {
-				echo 'setting version to ${env.VERSION}'
+				echo "setting version to ${env.VERSION}"
+				sh 'echo $VERSION'
 			}		
 		}
 		stage('build') {
