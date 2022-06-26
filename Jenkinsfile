@@ -4,7 +4,7 @@ pipeline {
 		VERSION = """${sh(
 				returnStdout: true,
 				script: 'sed -nE "s/^version=([^-]+)-SNAPSHOT/\\1/p" gradle.properties'
-			)}.${env.BUILD_ID}"""
+			).trim()}.${env.BUILD_ID}"""
 	}
 	stages {
 		stage('version') {
