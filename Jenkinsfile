@@ -21,6 +21,9 @@ pipeline {
 			}
 		}
 		stage('release') {
+			environment {
+				GITHUB_KEY = credentials('alter-ukko-github-ssh')
+			}
 			steps {
 				echo "relasing verion ${env.VERSION}..."
 				sh 'git config --global user.email "alter.ukko@gmail.com"'
