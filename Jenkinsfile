@@ -22,6 +22,8 @@ pipeline {
 		stage('release') {
 			steps {
 				echo "relasing verion ${env.VERSION}..."
+				sh 'git config --global user.email "alter.ukko@gmail.com"'
+				sh 'git config --global user.name "alter-ukko"'
 				sh 'git add gradle.properties'
 				sh 'git commit -m "update version to ${VERSION}"'
 				sh 'git push'
