@@ -3,7 +3,7 @@ pipeline {
 	environment {
 		VERSION = """${sh(
 				returnStdout: true,
-				script: 'sed -nE "s/^version=([^-]+)-SNAPSHOT/\1/p" gradle.properties'
+				script: 'sed -nE "s/^version=([^-]+)-SNAPSHOT/\\1/p" gradle.properties'
 			)}"""
 	}
 	stages {
