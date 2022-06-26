@@ -1,0 +1,26 @@
+pipeline {
+	agent any
+	environment {
+		VERSION = """${sh(
+				returnStdout: true,
+				script: 'sed -nE "s/^version=([^-]+)-SNAPSHOT/\1/p" gradle.properties'
+			)}.${env.BUILD_ID}"""
+	}
+	stages {
+		stage('version') {
+			steps {
+				echo 'setting version to ${env.VERSION}'
+			}		
+		}
+		stage('build') {
+			steps {
+				echo 'building...'
+			}
+		}
+		stage('deploy') {
+			steps {
+				echo 'deploying...'
+			}
+		}
+	}
+}

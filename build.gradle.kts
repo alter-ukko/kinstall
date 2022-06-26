@@ -5,9 +5,6 @@ plugins {
     application
 }
 
-group = "com.dimdarkevil"
-version = "1.2-SNAPSHOT"
-
 repositories {
     mavenCentral()
 }
