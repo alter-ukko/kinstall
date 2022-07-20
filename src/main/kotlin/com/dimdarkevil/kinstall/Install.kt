@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.attribute.PosixFilePermissions
+import java.util.zip.GZIPInputStream
 import kotlin.concurrent.thread
 import kotlin.system.exitProcess
 
@@ -19,6 +20,7 @@ object Install {
     private val pwd = File(System.getProperty("user.dir"))
     private val projectNameRegex = Regex("rootProject: root project '(.*?)'")
     private val projectVerRegex = Regex("version: (.*)")
+    private val tarballExtensions = setOf("tar", "gz", "tgz")
 
     private val help = """
         kinstall ${Version.version}
@@ -130,15 +132,15 @@ object Install {
         val distDir = File(pwd, "build/distributions")
         if (!distDir.exists()) throw RuntimeException("No dist dir ${distDir.path}")
         if (!distDir.isDirectory) throw RuntimeException("Dist dir is not a directory: ${distDir.path}")
-        val distTarFile = distDir.listFiles { f -> f.extension == "tar" }?.toList()?.firstOrNull()
-            ?: throw RuntimeException("No distributing tar files found in ${distDir.path}")
+        val distTarFile = distDir.listFiles { f -> f.extension in tarballExtensions }?.toList()?.firstOrNull()
+            ?: throw RuntimeException("No distributing tar/tgz files found in ${distDir.path}")
         untarFile(distTarFile, installDir)
         val currentDir = File(kinstallDir, "${project}/_current")
         if (currentDir.exists() && currentDir.canonicalPath != installDir.canonicalPath) {
             println("Do you want to make $version the current version of $project (y/N)?")
             if ((readLine() ?: "n").lowercase() != "y") return
         }
-        if (currentDir.exists()) currentDir.delete()
+        currentDir.deleteIfExists()
         Files.createSymbolicLink(currentDir.toPath(), installDir.toPath())
         val targetBinDir = File(currentDir, "bin")
         targetBinDir.listFiles { f -> f.extension != "bat" }?.forEach { f ->
@@ -149,8 +151,20 @@ object Install {
         }
     }
 
+    fun File.deleteIfExists() {
+        if (this.exists()) this.delete()
+    }
+
+    fun File.isGzip() = (extension == "tgz" || extension == "gz")
+
+    fun File.bufferedInputStream() = if (isGzip()) {
+        BufferedInputStream(GZIPInputStream(FileInputStream(this)))
+    } else {
+        BufferedInputStream(FileInputStream(this))
+    }
+
     fun untarFile(fileToUntar: File, destFolder: File) {
-        BufferedInputStream(FileInputStream(fileToUntar)).use { fin ->
+        fileToUntar.bufferedInputStream().use { fin ->
             TarArchiveInputStream(fin).use { ais ->
                 var entry : TarArchiveEntry? = ais.nextTarEntry
                 while (entry != null) {
