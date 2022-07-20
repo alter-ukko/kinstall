@@ -30,6 +30,10 @@ tasks.withType<ProcessResources> {
     }
 }
 
+tasks.distTar {
+    compression = Compression.GZIP
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
