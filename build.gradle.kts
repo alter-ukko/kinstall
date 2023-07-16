@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.0")
+    implementation(kotlin("stdlib"))
     implementation("org.apache.commons:commons-compress:1.21")
     implementation("com.offbytwo:docopt:0.6.0.20150202")
     implementation("org.slf4j:slf4j-simple:1.7.35")
