@@ -204,7 +204,7 @@ object Install {
     }
 
     fun getProjectNameAndVersion() : Pair<String,String> {
-        val (exitCode, res) = shellExecReturningStdOut("gradle", listOf("properties", "--console=plain", "-q"), workingDir = pwd)
+        val (exitCode, res) = shellExecReturningStdOut("./gradlew", listOf("properties", "--console=plain", "-q"), workingDir = pwd)
         if (exitCode != 0) throw RuntimeException("failed to run gradle properties in ${pwd.path}")
         val propLines = res.split("\n")
         val pnameLine = propLines.find { projectNameRegex.matches(it) }
